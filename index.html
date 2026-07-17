@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busan Foreigner Safety Platform</title>
     <style>
-        /* 화면 전체 여백과 패딩을 0으로 만들어 사진이 위아래 가득 차게 합니다 */
+        /* 모바일 화면에서 위아래 여백을 0으로 만들어 사진이 꽉 차게 합니다 */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #0b1d3a; /* 이미지 배경과 일치하는 딥 네이비 */
+            background-color: #0b1d3a; /* 이미지 배경과 똑같은 네이비 색상 */
             overflow-x: hidden;
         }
         .container {
             width: 100%;
-            max-width: 600px; /* 모바일 가로 가득 참 유지 */
+            max-width: 600px; /* 모바일 크기에 딱 맞춤 */
             margin: 0 auto;
             position: relative;
         }
@@ -27,36 +27,37 @@
             margin: 0;
             padding: 0;
         }
-        /* 이미지 위에 올라가는 실제 터치 감지 영역 */
+        /* 이미지 위를 손가락으로 누르는 투명 터치 영역 */
         .touch-link {
             position: absolute;
             cursor: pointer;
-            background-color: rgba(255, 255, 255, 0); /* 완전 투명 (동작 테스트 시 투명하게 숨김) */
+            background-color: rgba(255, 255, 255, 0); /* 투명하게 설정 */
             border-radius: 12px;
         }
 
-        /* 1. English 영역 (이미지 내부 흰 버튼 위치) */
+        /* [1. 언어 선택 버튼 터치 영역] */
+        /* English -> main_en.png로 연결 */
         .btn-en {
             top: 55.6%;
             left: 6.7%;
             width: 86.6%;
             height: 6.2%;
         }
-        /* 2. 中文 영역 */
+        /* 中文 -> main_cn.png로 연결 */
         .btn-cn {
             top: 62.4%;
             left: 6.7%;
             width: 86.6%;
             height: 6.2%;
         }
-        /* 3. 日本語 영역 */
+        /* 日本語 -> main_jp.png로 연결 */
         .btn-jp {
             top: 69.2%;
             left: 6.7%;
             width: 86.6%;
             height: 6.2%;
         }
-        /* 4. Tiếng Việt 영역 */
+        /* Tiếng Việt -> main_vn.png로 연결 */
         .btn-vn {
             top: 76.0%;
             left: 6.7%;
@@ -64,25 +65,25 @@
             height: 6.2%;
         }
 
-        /* 5. 긴급전화 공통 높이 및 위치 */
+        /* [2. 긴급전화 터치 영역 (하단)] */
         .phone-link {
             position: absolute;
             cursor: pointer;
             background-color: rgba(255, 255, 255, 0); 
-            height: 10.5%; /* 전화번호 영역 높이 감지 */
+            height: 10.5%;
             top: 81.5%;
         }
-        /* 112 경찰 터치 영역 */
+        /* 112 경찰 전화연결 */
         .call-112 {
             left: 6.7%;
             width: 27.5%;
         }
-        /* 119 소방 터치 영역 */
+        /* 119 소방 전화연결 */
         .call-119 {
             left: 36.2%;
             width: 27.5%;
         }
-        /* 1330 관광안내 터치 영역 */
+        /* 1330 관광안내 전화연결 */
         .call-1330 {
             left: 65.8%;
             width: 27.5%;
@@ -105,10 +106,14 @@
     </div>
 
     <script>
-        // 클릭 시 이미지만 변경하고 부드럽게 위로 정렬시키는 기능
+        // 버튼을 누르는 순간 이미지를 바꾸고 부드럽게 맨 위로 올리는 자바스크립트 함수
         function changeImage(imageName) {
-            document.getElementById('display-image').src = imageName;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            var imgTag = document.getElementById('display-image');
+            if (imgTag) {
+                imgTag.src = imageName;
+                // 스크롤을 맨 위로 매끄럽게 정렬하여 큰 이미지의 윗부분부터 볼 수 있게 합니다.
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
     </script>
 
