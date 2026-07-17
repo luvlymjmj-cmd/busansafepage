@@ -3,11 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busan Safe Page</title>
+    <title>Busan Safe Guide</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        /* 상단 언어 선택 바 */
+        .lang-header {
+            background-color: #333;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .lang-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .lang-btn:hover {
+            background-color: #45a049;
+        }
+        /* 메인 이미지 영역 */
+        .image-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .main-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        /* 중간 언어 선택 버튼 영역 */
+        .mid-nav {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e9e9e9;
+        }
+        .mid-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>부산 안전 페이지 테스트</h1>
-    <p>이미지가 잘 업로드되었습니다. 아래는 예시 이미지 호출입니다.</p>
-    <img src="home.png" alt="홈 이미지" style="max-width: 100%;">
+
+    <!-- [상단] 언어 선택 바 -->
+    <div class="lang-header">
+        <button class="lang-btn" onclick="changeImage('home.png')">KOREAN</button>
+        <button class="lang-btn" onclick="changeImage('hospital_en.png')">ENGLISH</button>
+        <button class="lang-btn" onclick="changeImage('hospital_cn.png')">CHINESE</button>
+        <button class="lang-btn" onclick="changeImage('hospital_jp.png')">JAPANESE</button>
+        <button class="lang-btn" onclick="changeImage('hospital_vn.png')">VIETNAMESE</button>
+    </div>
+
+    <!-- [중앙] 메인 이미지 표시 영역 (기본값: home.png가 대표이미지로 뜹니다) -->
+    <div class="image-container">
+        <img id="display-image" class="main-img" src="home.png" alt="Busan Safe Guide">
+    </div>
+
+    <!-- [중간] 언어 선택 버튼들 -->
+    <div class="mid-nav">
+        <div class="mid-title">Please select your language / 언어를 선택해 주세요</div>
+        <button class="lang-btn" onclick="changeImage('home.png')">한국어</button>
+        <button class="lang-btn" onclick="changeImage('hospital_en.png')">English</button>
+        <button class="lang-btn" onclick="changeImage('hospital_cn.png')">中文</button>
+        <button class="lang-btn" onclick="changeImage('hospital_jp.png')">日本語</button>
+        <button class="lang-btn" onclick="changeImage('hospital_vn.png')">Tiếng Việt</button>
+    </div>
+
+    <!-- 클릭하면 이미지를 슥슥 바꿔주는 기능 -->
+    <script>
+        function changeImage(imageName) {
+            document.getElementById('display-image').src = imageName;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
 </body>
 </html>
