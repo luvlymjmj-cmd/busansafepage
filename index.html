@@ -19,11 +19,17 @@
             margin: 0 auto;
             position: relative;
         }
-        img {
+        /* 모든 메인 안내 이미지는 기본적으로 숨겨둡니다 */
+        .main-img {
             width: 100%;
             height: auto;
+            display: none;
+        }
+        /* 현재 선택된 이미지만 화면에 보여줍니다 */
+        .main-img.active {
             display: block;
         }
+        
         .touch-link {
             position: absolute;
             cursor: pointer;
@@ -36,7 +42,7 @@
         .btn-jp { top: 69.2%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-vn { top: 76.0%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
 
-        /* 2. 상단 언어메뉴 클릭 영역 */
+        /* 2. 상단 언어메뉴 클릭 영역 (첫 화면으로 복귀) */
         .btn-top-lang { top: 0.5%; left: 2.0%; width: 28.0%; height: 4.5%; }
 
         /* 3. 중간 큰 전화 버튼 영역 */
@@ -54,17 +60,21 @@
 <body>
 
     <div class="container">
-        <!-- 깃허브가 인식할 수 있도록 순수한 파일명만 깔끔하게 지정합니다 -->
-        <img id="display-image" src="home.png" alt="Busan Foreigner Safety Platform">
+        <!-- [모든 이미지를 처음부터 정적으로 로드해 둡니다 - 물음표 방지] -->
+        <img id="img-home" class="main-img active" src="home.png" alt="Home">
+        <img id="img-en" class="main-img" src="main_en.png" alt="English">
+        <img id="img-cn" class="main-img" src="main_cn.png" alt="Chinese">
+        <img id="img-jp" class="main-img" src="main_jp.png" alt="Japanese">
+        <img id="img-vn" class="main-img" src="main_vn.png" alt="Vietnamese">
 
         <!-- [첫 화면 버튼 영역] -->
-        <div id="area-en" class="touch-link btn-en" onclick="changeImage('main_en.png')"></div>
-        <div id="area-cn" class="touch-link btn-cn" onclick="changeImage('main_cn.png')"></div>
-        <div id="area-jp" class="touch-link btn-jp" onclick="changeImage('main_jp.png')"></div>
-        <div id="area-vn" class="touch-link btn-vn" onclick="changeImage('main_vn.png')"></div>
+        <div id="area-en" class="touch-link btn-en" onclick="showPage('en')"></div>
+        <div id="area-cn" class="touch-link btn-cn" onclick="showPage('cn')"></div>
+        <div id="area-jp" class="touch-link btn-jp" onclick="showPage('jp')"></div>
+        <div id="area-vn" class="touch-link btn-vn" onclick="showPage('vn')"></div>
 
         <!-- [상단 언어 메뉴 누르면 홈 복귀] -->
-        <div id="area-top-lang" class="touch-link btn-top-lang" onclick="changeImage('home.png')" style="display: none;"></div>
+        <div id="area-top-lang" class="touch-link btn-top-lang" onclick="showPage('home')" style="display: none;"></div>
 
         <!-- [중간 긴급전화 버튼 영역] -->
         <a id="c-112" href="tel:112" class="touch-link call-112" style="display: none;"></a>
@@ -78,31 +88,37 @@
     </div>
 
     <script>
-        function changeImage(imageName) {
-            var imgTag = document.getElementById('display-image');
-            if (imgTag) {
-                // 불필요한 난수를 모두 지우고 정석 이름만 매칭합니다.
-                imgTag.src = imageName;
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                var isHome = (imageName === 'home.png');
-                
-                document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
-                document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
-                document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
-                document.getElementById('area-vn').style.display = isHome ? 'block' : 'none';
-                document.getElementById('h-112').style.display = isHome ? 'block' : 'none';
-                document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
-                document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
-
-                document.getElementById('area-top-lang').style.display = isHome ? 'none' : 'block';
-                document.getElementById('c-112').style.display = isHome ? 'none' : 'block';
-                document.getElementById('c-119').style.display = isHome ? 'none' : 'block';
-                document.getElementById('c-1330').style.display = isHome ? 'none' : 'block';
+        function showPage(lang) {
+            // 1. 모든 이미지를 일단 화면에서 숨깁니다.
+            var images = document.getElementsByClassName('main-img');
+            for (var i = 0; i < images.length; i++) {
+                images[i].classList.remove('active');
             }
+
+            // 2. 선택한 언어의 이미지만 켜줍니다.
+            document.getElementById('img-' + lang).classList.add('active');
+            
+            // 3. 화면을 맨 위로 스크롤합니다.
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 4. 홈화면일 때와 번역화면일 때 터치 버튼 영역을 전환합니다.
+            var isHome = (lang === 'home');
+            
+            document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-vn').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-112').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
+
+            document.getElementById('area-top-lang').style.display = isHome ? 'none' : 'block';
+            document.getElementById('c-112').style.display = isHome ? 'none' : 'block';
+            document.getElementById('c-119').style.display = isHome ? 'none' : 'block';
+            document.getElementById('c-1330').style.display = isHome ? 'none' : 'block';
         }
     </script>
 
 </body>
 </html>
+
