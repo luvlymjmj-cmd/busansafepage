@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busan Foreigner Safety Platform</title>
     <style>
+        /* 모바일 화면에서 위아래 여백을 0으로 만들어 사진이 가득 차게 합니다 */
         html, body {
             margin: 0;
             padding: 0;
@@ -24,33 +25,33 @@
             height: auto;
             display: block;
         }
-        /* 이미지 위를 클릭하는 투명 터치막 공통 스타일 */
+        /* 이미지 위를 손가락으로 누르는 투명 터치 영역 */
         .touch-link {
             position: absolute;
             cursor: pointer;
             background-color: rgba(255, 255, 255, 0); /* 완전 투명 */
         }
 
-        /* [1. 대표이미지(home.png) 상태일 때의 언어 버튼 위치] */
+        /* [1. 첫 화면(home.png) 상태일 때의 언어 버튼 위치] */
         .btn-en { top: 55.6%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-cn { top: 62.4%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-jp { top: 69.2%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-vn { top: 76.0%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
 
-        /* [2. 모든 페이지 공통: 제일 상단 언어선택(简体中文 ∨) 클릭 영역] */
+        /* [2. 번역 화면 상태일 때: 제일 상단 언어메뉴(简体中文 ∨ 등) 클릭 영역] */
         .btn-top-lang {
-            top: 1.5%;
+            top: 0.5%;
             left: 2.0%;
-            width: 25.0%;
-            height: 3.5%;
+            width: 28.0%;
+            height: 4.5%;
         }
 
-        /* [3. 긴급전화 터치 영역 - home.png 와 main_cn.png 공통 지원] */
-        .call-112 { top: 30.5%; left: 2.5%; width: 30.0%; height: 13.5%; }
-        .call-119 { top: 30.5%; left: 35.0%; width: 30.0%; height: 13.5%; }
-        .call-1330 { top: 30.5%; left: 67.5%; width: 30.0%; height: 13.5%; }
+        /* [3. 번역 화면 상태일 때: 중간에 크게 박힌 112, 119, 1330 버튼 영역] */
+        .call-112 { top: 29.5%; left: 2.5%; width: 30.0%; height: 14.5%; }
+        .call-119 { top: 29.5%; left: 35.0%; width: 30.0%; height: 14.5%; }
+        .call-1330 { top: 29.5%; left: 67.5%; width: 30.0%; height: 14.5%; }
 
-        /* [4. 홈(대표이미지) 전용 하단 긴급전화 영역 (home.png 맨밑에 배치된 전화 대응)] */
+        /* [4. 첫 화면(home.png) 상태일 때: 맨 아래 긴급전화 영역] */
         .home-phone {
             height: 10.5%;
             top: 81.5%;
@@ -63,24 +64,19 @@
 <body>
 
     <div class="container">
-        <!-- 메인 화면 이미지 (브라우저가 이미지를 강제로 새로고침하도록 타임스탬프 기능을 자바스크립트로 넣었습니다) -->
         <img id="display-image" src="home.png" alt="Busan Foreigner Safety Platform">
 
-        <!-- [첫 화면(home.png)에서 국적별 버튼 누르는 영역] -->
         <div id="area-en" class="touch-link btn-en" onclick="changeImage('main_en.png')" title="English"></div>
         <div id="area-cn" class="touch-link btn-cn" onclick="changeImage('main_cn.png')" title="中文"></div>
         <div id="area-jp" class="touch-link btn-jp" onclick="changeImage('main_jp.png')" title="日本語"></div>
         <div id="area-vn" class="touch-link btn-vn" onclick="changeImage('main_vn.png')" title="Tiếng Việt"></div>
 
-        <!-- [모든 화면 공통: 제일 상단 '언어 선택 영역' 누르면 첫 화면(대표이미지)으로 복귀] -->
-        <div class="touch-link btn-top-lang" onclick="changeImage('home.png')" title="Change Language"></div>
+        <div id="area-top-lang" class="touch-link btn-top-lang" onclick="changeImage('home.png')" title="Change Language" style="display: none;"></div>
 
-        <!-- [중간에 배치된 신형 긴급전화 버튼 영역 - main_cn.png 등의 큰 컬러 버튼 대응] -->
-        <a href="tel:112" class="touch-link call-112" title="Call 112"></a>
-        <a href="tel:119" class="touch-link call-119" title="Call 119"></a>
-        <a href="tel:1330" class="touch-link call-1330" title="Call 1330"></a>
+        <a id="c-112" href="tel:112" class="touch-link call-112" title="Call 112" style="display: none;"></a>
+        <a id="c-119" href="tel:119" class="touch-link call-119" title="Call 119" style="display: none;"></a>
+        <a id="c-1330" href="tel:1330" class="touch-link call-1330" title="Call 1330" style="display: none;"></a>
 
-        <!-- [첫 화면(home.png) 전용 맨 아래 긴급전화 영역] -->
         <a id="h-112" href="tel:112" class="touch-link home-phone home-112" title="Call 112"></a>
         <a id="h-119" href="tel:119" class="touch-link home-phone home-119" title="Call 119"></a>
         <a id="h-1330" href="tel:1330" class="touch-link home-phone home-1330" title="Call 1330"></a>
@@ -90,23 +86,28 @@
         function changeImage(imageName) {
             var imgTag = document.getElementById('display-image');
             if (imgTag) {
-                // [물음표 완벽 차단 기술] 이미지 주소 뒤에 랜덤 번호를 붙여 브라우저가 무조건 이미지를 새로 그리게 강제합니다.
-                imgTag.src = imageName + "?t=" + new Date().getTime();
+                // 경로 에러 및 물음표 차단을 위해 경로를 정확히 소문자로 지정합니다.
+                imgTag.src = imageName;
                 
-                // 화면을 맨 위로 부드럽게 올려줍니다.
+                // 화면을 가장 위로 부드럽게 올려줍니다.
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                // 첫 화면이 아닐 때는 첫 화면용 버튼들을 숨겨서 터치가 꼬이지 않게 보호합니다.
+                // 현재 화면이 메인 홈(home.png)인지 확인합니다.
                 var isHome = (imageName === 'home.png');
-                var displayVal = isHome ? 'block' : 'none';
                 
-                document.getElementById('area-en').style.display = displayVal;
-                document.getElementById('area-cn').style.display = displayVal;
-                document.getElementById('area-jp').style.display = displayVal;
-                document.getElementById('area-vn').style.display = displayVal;
-                document.getElementById('h-112').style.display = displayVal;
-                document.getElementById('h-119').style.display = displayVal;
-                document.getElementById('h-1330').style.display = displayVal;
+                // 홈화면일 때와 번역화면일 때 터치 영역을 알맞게 켜고 끕니다.
+                document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
+                document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
+                document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
+                document.getElementById('area-vn').style.display = isHome ? 'block' : 'none';
+                document.getElementById('h-112').style.display = isHome ? 'block' : 'none';
+                document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
+                document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
+
+                document.getElementById('area-top-lang').style.display = isHome ? 'none' : 'block';
+                document.getElementById('c-112').style.display = isHome ? 'none' : 'block';
+                document.getElementById('c-119').style.display = isHome ? 'none' : 'block';
+                document.getElementById('c-1330').style.display = isHome ? 'none' : 'block';
             }
         }
     </script>
