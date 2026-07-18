@@ -3,156 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메디컬 정보 안내</title>
+    <title>Busan Foreigner Safety Platform</title>
     <style>
-        /* 기본 스타일 초기화 */
-        * {
+        html, body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Malgun Gothic', dotum, sans-serif;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* 중앙 카드 컨테이너 */
-        .container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            max-width: 450px;
             width: 100%;
+            height: 100%;
+            background-color: #0b1d3a;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-
-        /* 병원 로고나 제목 아이콘 느낌 */
-        .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
         }
-
-        h1 {
-            font-size: 24px;
-            color: #333333;
-            margin-bottom: 25px;
+        .main-img {
+            width: 100%;
+            height: auto;
+            display: none;
         }
-
-        /* 언어 선택 라디오/버튼 그룹 */
-        .lang-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 35px;
+        .main-img.active {
+            display: block;
         }
-
-        .lang-btn {
-            padding: 8px 16px;
-            border: 1px solid #dee2e6;
-            background-color: #ffffff;
-            color: #495057;
-            border-radius: 30px;
+        
+        /* 투명 터치 레이어 기본 설정 */
+        .touch-link {
+            position: absolute;
             cursor: pointer;
+            background-color: rgba(255, 255, 255, 0);
+            z-index: 10;
+            /* 개발 중 터치 영역을 붉은색으로 보고 싶다면 아래 주석(#)을 지우세요 */
+            /* background-color: rgba(255, 0, 0, 0.3); */
+        }
+
+        /* [최우선 레이어] 상단바 및 전화 버튼은 맨 위층으로 고정 */
+        .layer-top-priority {
+            z-index: 99; 
+        }
+
+        /* [첫 메인화면(home.png) 내 국가별 버튼] */
+        .btn-en { top: 55.6%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
+        .btn-cn { top: 62.4%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
+        .btn-jp { top: 69.2%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
+        .btn-vn { top: 76.0%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
+
+        /* [첫 메인화면 최하단 전화걸기 영역] */
+        .home-phone { height: 10.5%; top: 81.5%; }
+        .home-112 { left: 6.7%; width: 27.5%; }
+        .home-119 { left: 36.2%; width: 27.5%; }
+        .home-1330 { left: 65.8%; width: 27.5%; }
+
+        /* [상단 내비게이션 터치 영역 (지구본)] */
+        .btn-lang-dropdown { top: 0.5%; left: 2.0%; width: 25.0%; height: 4.5%; } 
+
+        /* [중간 큰 전화 버튼 3개] */
+        .call-112 { top: 29.5%; left: 2.5%; width: 30.0%; height: 14.5%; }
+        .call-119 { top: 29.5%; left: 35.0%; width: 30.0%; height: 14.5%; }
+        .call-1330 { top: 29.5%; left: 67.5%; width: 30.0%; height: 14.5%; }
+
+        /* [국가별 메인화면 글자 칸 맞춤 터치 영역] */
+        .click-hospital  { top: 45.4%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-pharmacy  { top: 45.4%; left: 51.0%; width: 46.5%; height: 14.0%; }
+        .click-embassy   { top: 62.0%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-lost      { top: 62.0%; left: 51.0%; width: 46.5%; height: 14.0%; }
+        .click-rules     { top: 78.0%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-spots     { top: 78.0%; left: 51.0%; width: 46.5%; height: 14.0%; }
+
+        /* 병원 이미지 내부 하단 외부 링크 영역 */
+        .hospital-ext-link { top: 82.0%; left: 5.0%; width: 90.0%; height: 12.0%; z-index: 5; }
+
+        /* 언어 선택 드롭다운 메뉴 스타일 */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 5.0%; 
+            left: 2.0%;
+            width: 145px;
+            background-color: #12284c;
+            border: 1px solid #234375;
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+            z-index: 999; 
+            padding: 5px 0;
+        }
+        .dropdown-menu a {
+            display: block;
+            color: #ffffff;
+            padding: 10px 15px;
+            text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s ease;
+            border-bottom: 1px solid #1c3966;
         }
-
-        /* 선택된 언어 스타일 */
-        .lang-btn.active {
-            background-color: #007bff;
-            color: #ffffff;
-            border-color: #007bff;
+        .dropdown-menu a:last-child {
+            border-bottom: none;
         }
-
-        /* 메디컬 정보 메인 버튼 */
-        .action-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background-color: #28a745;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #218838;
-            transform: translateY(-1px);
+        .dropdown-menu a:active {
+            background-color: #1c3966;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="icon">🏥</div>
-        <h1 id="titleText">메디컬 정보 안내</h1>
+        <img id="img-home" class="main-img active" src="home.png" alt="Home">
+        <img id="img-en" class="main-img" src="main_en.png" alt="English">
+        <img id="img-cn" class="main-img" src="main_cn.png" alt="Chinese">
+        <img id="img-jp" class="main-img" src="main_jp.png" alt="Japanese">
+        <img id="img-vn" class="main-img" src="main_vn.png" alt="Vietnamese">
 
-        <!-- 언어 선택 버튼 -->
-        <div class="lang-group">
-            <button class="lang-btn active" onclick="setLanguage('ko', this)">한국어</button>
-            <button class="lang-btn" onclick="setLanguage('en', this)">English</button>
-            <button class="lang-btn" onclick="setLanguage('zh', this)">中文</button>
-            <button class="lang-btn" onclick="setLanguage('vi', this)">Tiếng Việt</button>
-            <button class="lang-btn" onclick="setLanguage('ja', this)">日本語</button>
+        <img id="img-sub-rules" class="main-img" src="basicrules.png" alt="Basic Rules">
+        <img id="img-sub-embassy" class="main-img" src="embassy.png" alt="Embassies">
+
+        <img id="img-sub-hospital-en" class="main-img" src="hospital_en.png" alt="Hospital EN">
+        <img id="img-sub-hospital-cn" class="main-img" src="hospital_cn.png" alt="Hospital CN">
+        <img id="img-sub-hospital-jp" class="main-img" src="hospital_jp.png" alt="Hospital JP">
+        <img id="img-sub-hospital-vn" class="main-img" src="hospital_vn.png" alt="Hospital VN">
+
+        <img id="img-sub-pharmacy-en" class="main-img" src="pharmacy_en.png" alt="Pharmacy EN">
+        <img id="img-sub-pharmacy-cn" class="main-img" src="pharmacy_cn.png" alt="Pharmacy CN">
+        <img id="img-sub-pharmacy-jp" class="main-img" src="pharmacy_jp.png" alt="Pharmacy JP">
+        <img id="img-sub-pharmacy-vn" class="main-img" src="pharmacy_vn.png" alt="Pharmacy VN">
+
+
+        <div id="area-en" class="touch-link btn-en" onclick="showPage('en')"></div>
+        <div id="area-cn" class="touch-link btn-cn" onclick="showPage('cn')"></div>
+        <div id="area-jp" class="touch-link btn-jp" onclick="showPage('jp')"></div>
+        <div id="area-vn" class="touch-link btn-vn" onclick="showPage('vn')"></div>
+
+        <a id="h-112" href="tel:112" class="touch-link home-phone home-112"></a>
+        <a id="h-119" href="tel:119" class="touch-link home-phone home-119"></a>
+        <a id="h-1330" href="tel:1330" class="touch-link home-phone home-1330"></a>
+
+        <div id="area-lang-dropdown" class="touch-link btn-lang-dropdown layer-top-priority" onclick="toggleDropdown(event)" style="display: none;"></div>
+
+        <div id="langDropdown" class="dropdown-menu">
+            <a href="#" onclick="changeLanguageDirect('home')">🏠 메인 (Home)</a>
+            <a href="#" onclick="changeLanguageDirect('en')">🇺🇸 English</a>
+            <a href="#" onclick="changeLanguageDirect('cn')">🇨🇳 中文 (简体)</a>
+            <a href="#" onclick="changeLanguageDirect('jp')">🇯🇵 日本語</a>
+            <a href="#" onclick="changeLanguageDirect('vn')">🇻🇳 Tiếng Việt</a>
         </div>
 
-        <!-- 클릭 시 해당 언어 이미지로 연결되는 버튼 -->
-        <a href="" id="medicalInfoLink" class="action-btn" target="_blank">
-            메디컬 정보 보기
-        </a>
+        <a id="c-112" href="tel:112" class="touch-link call-112 layer-top-priority" style="display: none;"></a>
+        <a id="c-119" href="tel:119" class="touch-link call-119 layer-top-priority" style="display: none;"></a>
+        <a id="c-1330" href="tel:1330" class="touch-link call-1330 layer-top-priority" style="display: none;"></a>
+
+        <div id="click-hosp" class="touch-link click-hospital" onclick="clickSubMenu('hospital')" style="display: none;"></div>
+        <div id="click-phar" class="touch-link click-pharmacy" onclick="clickSubMenu('pharmacy')" style="display: none;"></div>
+        <div id="click-emba" class="touch-link click-embassy" onclick="showPage('sub-embassy')" style="display: none;"></div>
+        <a id="click-lost" href="https://minwon24.police.go.kr/cvlcpt/cvlcptAply.do?cvlcptId=MW-201&keyword=" target="_blank" class="touch-link click-lost" style="display: none;"></a>
+        <div id="click-rule" class="touch-link click-rules" onclick="showPage('sub-rules')" style="display: none;"></div>
+        <a id="click-spot" href="https://www.visitbusan.net/index.do" target="_blank" class="touch-link click-spots" style="display: none;"></a>
+
+        <a id="go-ext-hospital" href="https://www.busan.go.kr/eng/bsmedical01" target="_blank" class="touch-link hospital-ext-link" style="display: none;"></a>
     </div>
 
     <script>
-        // 다국어 텍스트 매핑 데이터
-        const langData = {
-            'ko': { title: '메디컬 정보 안내', btn: '메디컬 정보 보기', suffix: 'ko' },
-            'en': { title: 'Medical Information', btn: 'View Medical Info', suffix: 'en' },
-            'zh': { title: '医疗信息 📊', btn: '查看医疗信息', suffix: 'cn' }, // 파일명 매핑인 cn으로 지정
-            'vi': { title: 'Thông tin Y tế', btn: 'Xem thông tin y tế', suffix: 'vn' }, // 파일명 매핑인 vn으로 지정
-            'ja': { title: '医療情報のご案内', btn: '医療情報を見る', suffix: 'jp' }
-        };
+        var currentLang = 'home'; 
 
-        function setLanguage(langCode, element) {
-            // 1. html 태그의 lang 속성 변경
-            document.documentElement.lang = langCode;
+        function showPage(pageId) {
+            document.getElementById('langDropdown').style.display = 'none';
 
-            // 2. 활성화된 버튼 디자인 변경
-            const buttons = document.querySelectorAll('.lang-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+            var images = document.getElementsByClassName('main-img');
+            for (var i = 0; i < images.length; i++) {
+                images[i].classList.remove('active');
+            }
 
-            // 3. 언어별 데이터 가져오기 (없으면 영어 세팅)
-            const currentData = langData[langCode] || langData['en'];
+            document.getElementById('img-' + pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 4. 화면 글자 동적 변경
-            document.getElementById('titleText').textContent = currentData.title;
+            if(pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn') {
+                currentLang = pageId;
+            }
+
+            var isHome = (pageId === 'home');
+            var isMainLang = (pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn');
+            var isHospitalSub = pageId.includes('hospital');
+            var isPharmacySub = pageId.includes('pharmacy');
+
+            // 1. 최초 홈화면(home.png) 전용 레이어 제어
+            document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
+            document.getElementById('area-vn').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-112').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
+            document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
+
+            // 2. 상단 내비게이션 바 제어 (홈화면이 아닐 때 작동)
+            document.getElementById('area-lang-dropdown').style.display = !isHome ? 'block' : 'none';
+
+            // 3. 긴급 전화 버튼 스마트 통제 구역
+            if (isHome) {
+                // 최초 홈화면은 상단 전화 버튼 모두 숨김
+                document.getElementById('c-112').style.display = 'none';
+                document.getElementById('c-119').style.display = 'none';
+                document.getElementById('c-1330').style.display = 'none';
+            } else if (isHospitalSub || isPharmacySub) {
+                // 🔥 병원 및 약국 상세 이미지 화면에서는 112, 119만 노출 (1330은 완전히 숨김)
+                document.getElementById('c-112').style.display = 'block';
+                document.getElementById('c-119').style.display = 'block';
+                document.getElementById('c-1330').style.display = 'none';
+            } else {
+                // 국가별 메인 및 기타 서브화면은 원래대로 3개 모두 노출
+                document.getElementById('c-112').style.display = 'block';
+                document.getElementById('c-119').style.display = 'block';
+                document.getElementById('c-1330').style.display = 'block';
+            }
             
-            const actionBtn = document.getElementById('medicalInfoLink');
-            actionBtn.textContent = currentData.btn;
+            // 4. 국가별 메인 가이드 화면일 때만 6대 하부 메뉴 칸 터치 활성화
+            document.getElementById('click-hosp').style.display = isMainLang ? 'block' : 'none';
+            document.getElementById('click-phar').style.display = isMainLang ? 'block' : 'none';
+            document.getElementById('click-emba').style.display = isMainLang ? 'block' : 'none';
+            document.getElementById('click-lost').style.display = isMainLang ? 'block' : 'none';
+            document.getElementById('click-rule').style.display = isMainLang ? 'block' : 'none';
+            document.getElementById('click-spot').style.display = isMainLang ? 'block' : 'none';
 
-            // 5. 업로드하신 이미지 파일명 양식 적용
-            // 이미지들이 index.html과 같은 폴더에 있다면 아래 그대로 쓰시면 됩니다.
-            // 만약 images 폴더 안에 있다면 주소를 `./images/medical-info-${currentData.suffix}.png` 로 변경하세요.
-            actionBtn.href = `./medical-info-${currentData.suffix}.png`;
+            // 5. 병원 내부 상세 이미지 스크린일 때만 외부 링크 레이어 가동
+            document.getElementById('go-ext-hospital').style.display = isHospitalSub ? 'block' : 'none';
         }
 
-        // 페이지 처음 열릴 때 기본값(한국어)으로 세팅 적용
-        window.addEventListener('DOMContentLoaded', () => {
-            const defaultBtn = document.querySelector('.lang-btn.active');
-            setLanguage('ko', defaultBtn);
+        function toggleDropdown(event) {
+            event.stopPropagation(); 
+            var dropdown = document.getElementById('langDropdown');
+            if (dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            } else {
+                dropdown.style.display = 'block';
+            }
+        }
+
+        function changeLanguageDirect(langCode) {
+            document.getElementById('langDropdown').style.display = 'none';
+            showPage(langCode);
+        }
+
+        document.addEventListener('click', function() {
+            document.getElementById('langDropdown').style.display = 'none';
         });
+
+        function clickSubMenu(type) {
+            if (type === 'hospital') {
+                var extLink = document.getElementById('go-ext-hospital');
+                if (currentLang === 'en') extLink.href = "https://www.busan.go.kr/eng/bsmedical01";
+                if (currentLang === 'cn') extLink.href = "https://www.busan.go.kr/chn/bsmedical01";
+                if (currentLang === 'jp') extLink.href = "https://www.busan.go.kr/jap/bsmedical01";
+                if (currentLang === 'vn') extLink.href = "https://www.busan.go.kr/eng/bsmedical01";
+
+                showPage('sub-hospital-' + currentLang);
+            } else if (type === 'pharmacy') {
+                showPage('sub-pharmacy-' + currentLang);
+            }
+        }
     </script>
 
 </body>
