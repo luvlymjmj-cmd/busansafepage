@@ -32,53 +32,54 @@
             position: absolute;
             cursor: pointer;
             background-color: rgba(255, 255, 255, 0);
+            /* 위치 맞출 때 아래 주석(#)을 지우면 빨간색으로 영역이 보여서 편합니다 */
+            /* background-color: rgba(255, 0, 0, 0.3); */
         }
 
-        /* [1. 첫 메인화면(home.png) 내 국가별 버튼] */
+        /* [첫 메인화면(home.png) 내 국가별 버튼] */
         .btn-en { top: 55.6%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-cn { top: 62.4%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-jp { top: 69.2%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
         .btn-vn { top: 76.0%; left: 6.7%; width: 86.6%; height: 6.2%; border-radius: 12px; }
 
-        /* [2. 가이드 화면 상단 (홈으로 복귀 버튼)] */
-        .btn-top-lang { top: 0.5%; left: 2.0%; width: 28.0%; height: 4.5%; }
-
-        /* [3. 가이드 화면 중간 큰 전화 버튼 3개] */
-        .call-112 { top: 29.5%; left: 2.5%; width: 30.0%; height: 14.5%; }
-        .call-119 { top: 29.5%; left: 35.0%; width: 30.0%; height: 14.5%; }
-        .call-1330 { top: 29.5%; left: 67.5%; width: 30.0%; height: 14.5%; }
-
-        /* [4. 첫 메인화면 최하단 전화걸기 영역] */
+        /* [첫 메인화면 최하단 전화걸기 영역] */
         .home-phone { height: 10.5%; top: 81.5%; }
         .home-112 { left: 6.7%; width: 27.5%; }
         .home-119 { left: 36.2%; width: 27.5%; }
         .home-1330 { left: 65.8%; width: 27.5%; }
 
-        /* [5. 각 국 메인화면 내 하부 메뉴 터치 영역] */
-        .sub-click { height: 8.5%; }
-        .click-hospital  { top: 45.4%; left: 2.5%; width: 46.5%; }
-        .click-pharmacy  { top: 45.4%; left: 51.0%; width: 46.5%; }
-        .click-embassy   { top: 62.6%; left: 2.5%; width: 46.5%; }
-        .click-lost      { top: 62.6%; left: 51.0%; width: 46.5%; }
-        .click-rules     { top: 78.4%; left: 2.5%; width: 46.5%; }
-        .click-spots     { top: 78.4%; left: 51.0%; width: 46.5%; }
+        /* [상단 내비게이션 버튼 (이전으로 / 석삼 메뉴)] */
+        .btn-back { top: 0.5%; left: 2.0%; width: 15.0%; height: 4.5%; } 
+        .btn-menu { top: 0.5%; right: 2.0%; width: 15.0%; height: 4.5%; } 
 
-        /* [6. 병원 이미지 화면 내부에서 외부 사이트로 가는 터치 버튼] */
-        .hospital-ext-link { top: 80.0%; left: 10.0%; width: 80.0%; height: 10.0%; }
+        /* [★ 상시 가동 ★ 가이드 및 서브 화면 중간 큰 전화 버튼 3개] */
+        .call-112 { top: 29.5%; left: 2.5%; width: 30.0%; height: 14.5%; }
+        .call-119 { top: 29.5%; left: 35.0%; width: 30.0%; height: 14.5%; }
+        .call-1330 { top: 29.5%; left: 67.5%; width: 30.0%; height: 14.5%; }
+
+        /* [국가별 메인화면 글자 칸 맞춤 터치 영역] */
+        .click-hospital  { top: 45.4%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-pharmacy  { top: 45.4%; left: 51.0%; width: 46.5%; height: 14.0%; }
+        .click-embassy   { top: 62.0%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-lost      { top: 62.0%; left: 51.0%; width: 46.5%; height: 14.0%; }
+        .click-rules     { top: 78.0%; left: 2.5%; width: 46.5%; height: 14.0%; }
+        .click-spots     { top: 78.0%; left: 51.0%; width: 46.5%; height: 14.0%; }
+
+        /* [병원 이미지 내부에서 외부 사이트로 가는 하단 영역] */
+        .hospital-ext-link { top: 80.0%; left: 5.0%; width: 90.0%; height: 15.0%; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <!-- ▣ 이미지 파일 보관함 -->
-        <!-- 기본 메인 화면들 -->
         <img id="img-home" class="main-img active" src="home.png" alt="Home">
         <img id="img-en" class="main-img" src="main_en.png" alt="English">
         <img id="img-cn" class="main-img" src="main_cn.png" alt="Chinese">
         <img id="img-jp" class="main-img" src="main_jp.png" alt="Japanese">
         <img id="img-vn" class="main-img" src="main_vn.png" alt="Vietnamese">
 
-        <!-- 공통 서브 화면들 (영사관 파일명 정정 완료) -->
+        <!-- 공통 서브 화면들 -->
         <img id="img-sub-rules" class="main-img" src="basicrules.png" alt="Basic Rules">
         <img id="img-sub-embassy" class="main-img" src="embassy.png" alt="Embassies">
 
@@ -96,52 +97,50 @@
 
 
         <!-- ▣ 터치 레이어 배포 구역 -->
-        <!-- [첫 화면 국가 선택] -->
+        <!-- [최초 화면 국가 선택 버튼] -->
         <div id="area-en" class="touch-link btn-en" onclick="showPage('en')"></div>
         <div id="area-cn" class="touch-link btn-cn" onclick="showPage('cn')"></div>
         <div id="area-jp" class="touch-link btn-jp" onclick="showPage('jp')"></div>
         <div id="area-vn" class="touch-link btn-vn" onclick="showPage('vn')"></div>
 
-        <!-- [상단 언어 메뉴 누르면 항상 홈으로 복귀] -->
-        <div id="area-top-lang" class="touch-link btn-top-lang" onclick="showPage('home')" style="display: none;"></div>
-
-        <!-- [가이드 화면 중간 긴급전화] -->
-        <a id="c-112" href="tel:112" class="touch-link call-112" style="display: none;"></a>
-        <a id="c-119" href="tel:119" class="touch-link call-119" style="display: none;"></a>
-        <a id="c-1330" href="tel:1330" class="touch-link call-1330" style="display: none;"></a>
-
-        <!-- [첫 메인화면 하단 긴급전화] -->
+        <!-- [최초 화면 최하단 전화걸기] -->
         <a id="h-112" href="tel:112" class="touch-link home-phone home-112"></a>
         <a id="h-119" href="tel:119" class="touch-link home-phone home-119"></a>
         <a id="h-1330" href="tel:1330" class="touch-link home-phone home-1330"></a>
 
-        <!-- [4개국 공통 하부 메뉴 터치 영역] -->
-        <div id="click-hosp" class="touch-link sub-click click-hospital" onclick="clickSubMenu('hospital')" style="display: none;"></div>
-        <div id="click-phar" class="touch-link sub-click click-pharmacy" onclick="clickSubMenu('pharmacy')" style="display: none;"></div>
-        <div id="click-emba" class="touch-link sub-click click-embassy" onclick="showPage('sub-embassy')" style="display: none;"></div>
-        <a id="click-lost" href="https://www.lost112.go.kr/eng/main.do" target="_blank" class="touch-link sub-click click-lost" style="display: none;"></a>
-        <div id="click-rule" class="touch-link sub-click click-rules" onclick="showPage('sub-rules')" style="display: none;"></div>
-        <a id="click-spot" href="https://www.visitbusan.net/index.do" target="_blank" class="touch-link sub-click click-spots" style="display: none;"></a>
+        <!-- [상단 내비게이션 제어 기능] -->
+        <div id="area-back" class="touch-link btn-back" onclick="goBack()" style="display: none;"></div>
+        <div id="area-menu" class="touch-link btn-menu" onclick="showPage('home')" style="display: none;"></div>
 
-        <!-- [병원 이미지 화면 내부에서 외부 사이트로 튕겨주는 투명 버튼] -->
+        <!-- [★ 이제 병원/약국 등 모든 서브화면에서도 터치 가능 ★ 중간 긴급전화] -->
+        <a id="c-112" href="tel:112" class="touch-link call-112" style="display: none;"></a>
+        <a id="c-119" href="tel:119" class="touch-link call-119" style="display: none;"></a>
+        <a id="c-1330" href="tel:1330" class="touch-link call-1330" style="display: none;"></a>
+
+        <!-- [국가 가이드 화면 내 메뉴 글자 칸 터치 영역] -->
+        <div id="click-hosp" class="touch-link click-hospital" onclick="clickSubMenu('hospital')" style="display: none;"></div>
+        <div id="click-phar" class="touch-link click-pharmacy" onclick="clickSubMenu('pharmacy')" style="display: none;"></div>
+        <div id="click-emba" class="touch-link click-embassy" onclick="showPage('sub-embassy')" style="display: none;"></div>
+        <a id="click-lost" href="https://www.lost112.go.kr/eng/main.do" target="_blank" class="touch-link click-lost" style="display: none;"></a>
+        <div id="click-rule" class="touch-link click-rules" onclick="showPage('sub-rules')" style="display: none;"></div>
+        <a id="click-spot" href="https://www.visitbusan.net/index.do" target="_blank" class="touch-link click-spots" style="display: none;"></a>
+
+        <!-- [병원 이미지 스크린 전용 외부 사이트 아웃링크 버튼] -->
         <a id="go-ext-hospital" href="https://www.busan.go.kr/eng/bsmedical01" target="_blank" class="touch-link hospital-ext-link" style="display: none;"></a>
     </div>
 
     <script>
-        var currentLang = 'home';
+        var currentLang = 'home'; 
 
         function showPage(pageId) {
-            // 1. 모든 이미지 숨기기
             var images = document.getElementsByClassName('main-img');
             for (var i = 0; i < images.length; i++) {
                 images[i].classList.remove('active');
             }
 
-            // 2. 지정된 페이지 켜기
             document.getElementById('img-' + pageId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 언어 기억 추적
             if(pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn') {
                 currentLang = pageId;
             }
@@ -150,7 +149,7 @@
             var isMainLang = (pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn');
             var isHospitalSub = pageId.includes('hospital');
 
-            // 3. 홈 화면 레이어 통제
+            // 1. 최초 홈화면(home.png) 전용 레이어 제어
             document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
             document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
             document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
@@ -159,13 +158,16 @@
             document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
             document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
 
-            // 4. 서브 화면 상단바 및 전화 버튼 통제
-            document.getElementById('area-top-lang').style.display = isHome ? 'none' : 'block';
-            document.getElementById('c-112').style.display = isHome ? 'none' : 'block';
-            document.getElementById('c-119').style.display = isHome ? 'none' : 'block';
-            document.getElementById('c-1330').style.display = isHome ? 'none' : 'block';
+            // 2. 상단 내비게이션 바 제어 (홈화면이 아닐 때 상시 작동)
+            document.getElementById('area-back').style.display = !isHome ? 'block' : 'none';
+            document.getElementById('area-menu').style.display = !isHome ? 'block' : 'none';
 
-            // 5. 각 국가별 메인 화면일 때만 하부 메뉴 6개 버튼 활성화
+            // 3. 홈화면만 아니라면 국가 메인이든, 병원/약국이든 상단 전화 버튼 무조건 오픈!
+            document.getElementById('c-112').style.display = !isHome ? 'block' : 'none';
+            document.getElementById('c-119').style.display = !isHome ? 'block' : 'none';
+            document.getElementById('c-1330').style.display = !isHome ? 'block' : 'none';
+            
+            // 4. 국가별 메인 가이드 화면일 때만 6대 하부 메뉴 칸 터치 활성화
             document.getElementById('click-hosp').style.display = isMainLang ? 'block' : 'none';
             document.getElementById('click-phar').style.display = isMainLang ? 'block' : 'none';
             document.getElementById('click-emba').style.display = isMainLang ? 'block' : 'none';
@@ -173,11 +175,23 @@
             document.getElementById('click-rule').style.display = isMainLang ? 'block' : 'none';
             document.getElementById('click-spot').style.display = isMainLang ? 'block' : 'none';
 
-            // 6. 병원 서브 이미지 화면일 때만 외부 사이트 링크 버튼 활성화
+            // 5. 병원 내부 상세 이미지 스크린일 때만 외부 링크 레이어 가동
             document.getElementById('go-ext-hospital').style.display = isHospitalSub ? 'block' : 'none';
         }
 
-        // 어떤 국가 메인에서 하부 메뉴를 눌렀는지 판별하여 해당 나라 이미지로 연결
+        function goBack() {
+            var activeImg = document.querySelector('.main-img.active');
+            var currentId = activeImg ? activeImg.id : '';
+
+            // 서브 상세 화면(sub-로 시작함)에 있으면 이전의 국가 메인 화면으로 이동
+            if (currentId.includes('sub-')) {
+                showPage(currentLang);
+            } else {
+                // 국가 메인화면이라면 최초 홈(home.png)으로 복귀
+                showPage('home');
+            }
+        }
+
         function clickSubMenu(type) {
             if (type === 'hospital') {
                 var extLink = document.getElementById('go-ext-hospital');
