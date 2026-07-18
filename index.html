@@ -118,10 +118,11 @@
         <img id="img-sub-rules" class="main-img" src="basicrules.png" alt="Basic Rules">
         <img id="img-sub-embassy" class="main-img" src="embassy.png" alt="Embassies">
 
-        <img id="img-sub-hospital-en" class="main-img" src="hospital_en.png" alt="Hospital EN">
-        <img id="img-sub-hospital-cn" class="main-img" src="hospital_cn.png" alt="Hospital CN">
-        <img id="img-sub-hospital-jp" class="main-img" src="hospital_jp.png" alt="Hospital JP">
-        <img id="img-sub-hospital-vn" class="main-img" src="hospital_vn.png" alt="Hospital VN">
+        <!-- 🌟 기존 병원 이미지 위치에 새로 만든 언어별 메디컬 정보 파일들을 완벽 매핑했습니다 -->
+        <img id="img-sub-hospital-en" class="main-img" src="medical-info-en.png" alt="Hospital EN">
+        <img id="img-sub-hospital-cn" class="main-img" src="medical-info-cn.png" alt="Hospital CN">
+        <img id="img-sub-hospital-jp" class="main-img" src="medical-info-jp.png" alt="Hospital JP">
+        <img id="img-sub-hospital-vn" class="main-img" src="medical-info-vn.png" alt="Hospital VN">
 
         <img id="img-sub-pharmacy-en" class="main-img" src="pharmacy_en.png" alt="Pharmacy EN">
         <img id="img-sub-pharmacy-cn" class="main-img" src="pharmacy_cn.png" alt="Pharmacy CN">
@@ -204,7 +205,7 @@
                 document.getElementById('c-119').style.display = 'none';
                 document.getElementById('c-1330').style.display = 'none';
             } else if (isHospitalSub || isPharmacySub) {
-                // 🔥 병원 및 약국 상세 이미지 화면에서는 112, 119만 노출 (1330은 완전히 숨김)
+                // 병원 및 약국 상세 이미지 화면에서는 112, 119만 노출 (1330은 완전히 숨김)
                 document.getElementById('c-112').style.display = 'block';
                 document.getElementById('c-119').style.display = 'block';
                 document.getElementById('c-1330').style.display = 'none';
@@ -249,6 +250,7 @@
         function clickSubMenu(type) {
             if (type === 'hospital') {
                 var extLink = document.getElementById('go-ext-hospital');
+                // 국가 브라우저 매핑용 중국어/베트남어 분기 자동 연결 설정
                 if (currentLang === 'en') extLink.href = "https://www.busan.go.kr/eng/bsmedical01";
                 if (currentLang === 'cn') extLink.href = "https://www.busan.go.kr/chn/bsmedical01";
                 if (currentLang === 'jp') extLink.href = "https://www.busan.go.kr/jap/bsmedical01";
