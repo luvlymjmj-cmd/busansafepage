@@ -1,109 +1,158 @@
--201&keyword=" target="_blank" class="touch-link click-lost" style="display: none;"></a>
-        <div id="click-rule" class="touch-link click-rules" onclick="showPage('sub-rules')" style="display: none;"></div>
-        <a id="click-spot" href="https://www.visitbusan.net/index.do" target="_blank" class="touch-link click-spots" style="display: none;"></a>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메디컬 정보 안내</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Malgun Gothic', dotum, sans-serif;
+        }
 
-        <!-- [병원 이미지 스크린 전용 외부 사이트 아웃링크 버튼] -->
-        <a id="go-ext-hospital" href="https://www.busan.go.kr/eng/bsmedical01" target="_blank" class="touch-link hospital-ext-link" style="display: none;"></a>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 중앙 카드 컨테이너 */
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        /* 병원 로고나 제목 아이콘 느낌 */
+        .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 25px;
+        }
+
+        /* 언어 선택 라디오/버튼 그룹 */
+        .lang-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 1px solid #dee2e6;
+            background-color: #ffffff;
+            color: #495057;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        /* 선택된 언어 스타일 */
+        .lang-btn.active {
+            background-color: #007bff;
+            color: #ffffff;
+            border-color: #007bff;
+        }
+
+        /* 메디컬 정보 메인 버튼 */
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="icon">🏥</div>
+        <h1 id="titleText">메디컬 정보 안내</h1>
+
+        <!-- 언어 선택 버튼 -->
+        <div class="lang-group">
+            <button class="lang-btn active" onclick="setLanguage('ko', this)">한국어</button>
+            <button class="lang-btn" onclick="setLanguage('en', this)">English</button>
+            <button class="lang-btn" onclick="setLanguage('zh', this)">中文</button>
+            <button class="lang-btn" onclick="setLanguage('vi', this)">Tiếng Việt</button>
+            <button class="lang-btn" onclick="setLanguage('ja', this)">日本語</button>
+        </div>
+
+        <!-- 클릭 시 해당 언어 이미지로 연결되는 버튼 -->
+        <a href="" id="medicalInfoLink" class="action-btn" target="_blank">
+            메디컬 정보 보기
+        </a>
     </div>
 
     <script>
-        var currentLang = 'home'; 
+        // 다국어 텍스트 매핑 데이터
+        const langData = {
+            'ko': { title: '메디컬 정보 안내', btn: '메디컬 정보 보기', suffix: 'ko' },
+            'en': { title: 'Medical Information', btn: 'View Medical Info', suffix: 'en' },
+            'zh': { title: '医疗信息 📊', btn: '查看医疗信息', suffix: 'cn' }, // 파일명 매핑인 cn으로 지정
+            'vi': { title: 'Thông tin Y tế', btn: 'Xem thông tin y tế', suffix: 'vn' }, // 파일명 매핑인 vn으로 지정
+            'ja': { title: '医療情報のご案内', btn: '医療情報を見る', suffix: 'jp' }
+        };
 
-        function showPage(pageId) {
-            document.getElementById('langDropdown').style.display = 'none';
+        function setLanguage(langCode, element) {
+            // 1. html 태그의 lang 속성 변경
+            document.documentElement.lang = langCode;
 
-            var images = document.getElementsByClassName('main-img');
-            for (var i = 0; i < images.length; i++) {
-                images[i].classList.remove('active');
-            }
+            // 2. 활성화된 버튼 디자인 변경
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
 
-            document.getElementById('img-' + pageId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 3. 언어별 데이터 가져오기 (없으면 영어 세팅)
+            const currentData = langData[langCode] || langData['en'];
 
-            if(pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn') {
-                currentLang = pageId;
-            }
-
-            var isHome = (pageId === 'home');
-            var isMainLang = (pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn');
-            var isHospitalSub = pageId.includes('hospital');
-            var isPharmacySub = pageId.includes('pharmacy');
-            var isMedInfoSub = (pageId === 'sub-medinfo'); // 메디컬 정보 서브페이지 체크
-
-            // 1. 최초 홈화면(home.png) 전용 레이어 제어
-            document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
-            document.getElementById('area-cn').style.display = isHome ? 'block' : 'none';
-            document.getElementById('area-jp').style.display = isHome ? 'block' : 'none';
-            document.getElementById('area-vn').style.display = isHome ? 'block' : 'none';
-            document.getElementById('h-112').style.display = isHome ? 'block' : 'none';
-            document.getElementById('h-119').style.display = isHome ? 'block' : 'none';
-            document.getElementById('h-1330').style.display = isHome ? 'block' : 'none';
-
-            // 2. 상단 내비게이션 바 제어 (홈화면이 아닐 때 작동)
-            document.getElementById('area-lang-dropdown').style.display = !isHome ? 'block' : 'none';
-
-            // 3. 긴급 전화 버튼 스마트 통제 (메인, 병원, 약국, 메디컬 정보 등 모든 곳에서 터치 보장)
-            if (isHome) {
-                document.getElementById('c-112').style.display = 'none';
-                document.getElementById('c-119').style.display = 'none';
-                document.getElementById('c-1330').style.display = 'none';
-            } else if (isHospitalSub || isPharmacySub || isMedInfoSub) {
-                // 병원, 약국, 메디컬 정보 스크린에서는 디자인에 맞춰 112, 119만 활성화 (1330은 완전히 숨김)
-                document.getElementById('c-112').style.display = 'block';
-                document.getElementById('c-119').style.display = 'block';
-                document.getElementById('c-1330').style.display = 'none';
-            } else {
-                // 국가별 메인 및 기타 서브화면은 원래대로 3개 모두 활성화
-                document.getElementById('c-112').style.display = 'block';
-                document.getElementById('c-119').style.display = 'block';
-                document.getElementById('c-1330').style.display = 'block';
-            }
+            // 4. 화면 글자 동적 변경
+            document.getElementById('titleText').textContent = currentData.title;
             
-            // 4. 국가별 메인 가이드 화면일 때만 6대 하부 메뉴 칸 터치 활성화
-            document.getElementById('click-hosp').style.display = isMainLang ? 'block' : 'none';
-            document.getElementById('click-phar').style.display = isMainLang ? 'block' : 'none';
-            document.getElementById('click-emba').style.display = isMainLang ? 'block' : 'none';
-            document.getElementById('click-lost').style.display = isMainLang ? 'block' : 'none';
-            document.getElementById('click-rule').style.display = isMainLang ? 'block' : 'none';
-            document.getElementById('click-spot').style.display = isMainLang ? 'block' : 'none';
+            const actionBtn = document.getElementById('medicalInfoLink');
+            actionBtn.textContent = currentData.btn;
 
-            // 5. 병원 내부 상세 이미지 스크린일 때만 외부 링크 레이어 가동
-            document.getElementById('go-ext-hospital').style.display = isHospitalSub ? 'block' : 'none';
+            // 5. 업로드하신 이미지 파일명 양식 적용
+            // 이미지들이 index.html과 같은 폴더에 있다면 아래 그대로 쓰시면 됩니다.
+            // 만약 images 폴더 안에 있다면 주소를 `./images/medical-info-${currentData.suffix}.png` 로 변경하세요.
+            actionBtn.href = `./medical-info-${currentData.suffix}.png`;
         }
 
-        function toggleDropdown(event) {
-            event.stopPropagation(); 
-            var dropdown = document.getElementById('langDropdown');
-            if (dropdown.style.display === 'block') {
-                dropdown.style.display = 'none';
-            } else {
-                dropdown.style.display = 'block';
-            }
-        }
-
-        function changeLanguageDirect(langCode) {
-            document.getElementById('langDropdown').style.display = 'none';
-            showPage(langCode);
-        }
-
-        document.addEventListener('click', function() {
-            document.getElementById('langDropdown').style.display = 'none';
+        // 페이지 처음 열릴 때 기본값(한국어)으로 세팅 적용
+        window.addEventListener('DOMContentLoaded', () => {
+            const defaultBtn = document.querySelector('.lang-btn.active');
+            setLanguage('ko', defaultBtn);
         });
-
-        function clickSubMenu(type) {
-            if (type === 'hospital') {
-                var extLink = document.getElementById('go-ext-hospital');
-                if (currentLang === 'en') extLink.href = "https://www.busan.go.kr/eng/bsmedical01";
-                if (currentLang === 'cn') extLink.href = "https://www.busan.go.kr/chn/bsmedical01";
-                if (currentLang === 'jp') extLink.href = "https://www.busan.go.kr/jap/bsmedical01";
-                if (currentLang === 'vn') extLink.href = "https://www.busan.go.kr/eng/bsmedical01";
-
-                showPage('sub-hospital-' + currentLang);
-            } else if (type === 'pharmacy') {
-                // 🔥 메디컬 정보 버튼을 누르면 새로 연동한 공통 안내 이미지 페이지로 이동합니다.
-                showPage('sub-medinfo');
-            }
-        }
     </script>
 
 </body>
