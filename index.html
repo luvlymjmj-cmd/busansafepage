@@ -76,9 +76,9 @@
         .click-rules     { top: 78.0%; left: 2.5%; width: 46.5%; height: 14.0%; }
         .click-spots     { top: 78.0%; left: 51.0%; width: 46.5%; height: 14.0%; }
 
-        /* 병원 이미지 내부: [메디컬 정보]와 [파인드 하스피털] 영역 */
-        .click-medical-info { top: 45.0%; left: 5.0%; width: 44.0%; height: 12.0%; z-index: 15; }
-        .click-find-hospital { top: 45.0%; left: 51.0%; width: 44.0%; height: 12.0%; z-index: 15; }
+        /* 🌟 병원 이미지 내부: 터치 씹힘 현상 방지를 위해 높이 및 레이어 순위(z-index) 정밀 재배치 */
+        .click-medical-info { top: 44.5%; left: 4.0%; width: 45.0%; height: 13.0%; z-index: 50; }
+        .click-find-hospital { top: 44.5%; left: 51.0%; width: 45.0%; height: 13.0%; z-index: 50; }
 
         /* 병원 이미지 내부 최하단 외부 링크 영역 */
         .hospital-ext-link { top: 82.0%; left: 5.0%; width: 90.0%; height: 12.0%; z-index: 5; }
@@ -165,7 +165,6 @@
 
         <div id="area-lang-dropdown" class="touch-link btn-lang-dropdown layer-top-priority" onclick="toggleDropdown(event)" style="display: none;"></div>
 
-        <!-- 🌟 드롭다운 메뉴 내 링크 클릭 시 갱신 이벤트를 명확히 바인딩 하도록 수정 -->
         <div id="langDropdown" class="dropdown-menu">
             <a href="#" onclick="changeLanguageDirect(event, 'home')">🏠 메인 (Home)</a>
             <a href="#" onclick="changeLanguageDirect(event, 'en')">🇺🇸 English</a>
@@ -189,7 +188,7 @@
         <!-- 부산 투어리스트 스팟 구글맵 링크 -->
         <a id="click-spot" href="https://www.google.com/maps/search/Busan+tourist+map/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw==" target="_blank" class="touch-link click-spots" style="display: none;"></a>
 
-        <!-- 병원 이미지 내부 링크 영역들 -->
+        <!-- 🌟 병원 이미지 내부 링크 영역들 -->
         <div id="click-med-info" class="touch-link click-medical-info" onclick="showMedicalInfoPage()" style="display: none;"></div>
         <a id="click-find-hosp" href="https://www.medicalkorea.or.kr/en/mostvisitedmedicalinstitutions" target="_blank" class="touch-link click-find-hospital" style="display: none;"></a>
         <a id="go-ext-hospital" href="https://www.busan.go.kr/eng/bsmedical01" target="_blank" class="touch-link hospital-ext-link" style="display: none;"></a>
@@ -297,6 +296,7 @@
             window.open("https://minwon24.police.go.kr/cvlcpt/cvlcptAply.do?cvlcptId=MW-201&keyword=", "_blank");
         }
 
+        // 🌟 [교정 완료] 메디컬 인포메이션 실행 시 현재 선택된 국가 코드에 맞추어 완벽하게 해당 이미지를 매핑합니다.
         function showMedicalInfoPage() {
             showPage('medical-info-' + currentLang);
         }
@@ -311,9 +311,8 @@
             }
         }
 
-        // 🌟 [핵심 교정] 드롭다운에서 언어 다이렉트 클릭 시 히스토리 및 강제 전환 타겟을 온전히 추적하도록 리팩토링
         function changeLanguageDirect(event, langCode) {
-            if (event) event.preventDefault(); // href="#"로 인해 최상단 주소가 오작동하는 기본 이벤트 방지
+            if (event) event.preventDefault(); 
             document.getElementById('langDropdown').style.display = 'none';
             showPage(langCode);
         }
