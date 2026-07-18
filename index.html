@@ -35,7 +35,7 @@
             cursor: pointer;
             background-color: rgba(255, 255, 255, 0);
             z-index: 10;
-            /* 💡 터치 구역이 맞는지 눈으로 확인하며 튜닝하고 싶을 땐 아래 주석(#)을 지우세요 */
+            /* 💡 위치를 눈으로 확인하고 싶다면 아래 주석(#)을 제거하세요 */
             /* background-color: rgba(255, 0, 0, 0.4); */
         }
 
@@ -186,7 +186,9 @@
         <div id="click-lost" class="touch-link click-lost" onclick="goToLostWebsite()" style="display: none;"></div>
         
         <div id="click-rule" class="touch-link click-rules" onclick="showPage('sub-rules')" style="display: none;"></div>
-        <a id="click-spot" href="https://www.visitbusan.net/index.do" target="_blank" class="touch-link click-spots" style="display: none;"></a>
+        
+        <!-- 🌟 [수정 완료] 부산 투어리스트 스팟을 구글맵 검색결과 새 창 링크로 변경 -->
+        <a id="click-spot" href="https://www.google.com/maps/search/Busan+tourist+map/data=!3m1!4b1?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw==" target="_blank" class="touch-link click-spots" style="display: none;"></a>
 
         <!-- 병원 이미지 내부 링크 영역들 -->
         <div id="click-med-info" class="touch-link click-medical-info" onclick="showMedicalInfoPage()" style="display: none;"></div>
@@ -202,6 +204,11 @@
 
         function showPage(pageId, isBackAction) {
             document.getElementById('langDropdown').style.display = 'none';
+
+            if (!document.getElementById('img-' + pageId)) {
+                console.error("Missing image container for pageId: " + pageId);
+                return;
+            }
 
             var images = document.getElementsByClassName('main-img');
             for (var i = 0; i < images.length; i++) {
@@ -223,10 +230,9 @@
             var isRules = (pageId === 'sub-rules');
             var isMainLang = (pageId === 'en' || pageId === 'cn' || pageId === 'jp' || pageId === 'vn');
             
-            // 🌟 확실한 분리를 위해 명확한 페이지 체크식으로 교정
-            var isHospitalSub = pageId.startsWith('sub-hospital');
-            var isPharmacySub = pageId.startsWith('sub-pharmacy');
-            var isMedicalInfoSub = pageId.startsWith('medical-info'); 
+            var isHospitalSub = pageId.indexOf('sub-hospital') !== -1;
+            var isPharmacySub = pageId.indexOf('sub-pharmacy') !== -1;
+            var isMedicalInfoSub = pageId.indexOf('medical-info') !== -1; 
 
             // 1. 최초 홈화면 국가선택 제어
             document.getElementById('area-en').style.display = isHome ? 'block' : 'none';
@@ -270,7 +276,7 @@
             document.getElementById('click-rule').style.display = isMainLang ? 'block' : 'none';
             document.getElementById('click-spot').style.display = isMainLang ? 'block' : 'none';
 
-            // 5. 병원 안내 내부 터치 제어 (오직 병원 메인화면 'sub-hospital-xx' 일 때만 오픈)
+            // 5. 병원 안내 내부 터치 제어
             document.getElementById('click-med-info').style.display = isHospitalSub ? 'block' : 'none';
             document.getElementById('click-find-hosp').style.display = isHospitalSub ? 'block' : 'none';
             document.getElementById('go-ext-hospital').style.display = isHospitalSub ? 'block' : 'none';
@@ -292,7 +298,6 @@
             window.open("https://minwon24.police.go.kr/cvlcpt/cvlcptAply.do?cvlcptId=MW-201&keyword=", "_blank");
         }
 
-        // 🌟 병원 안내 이미지 안에서 [메디컬 정보] 전환이 정상적으로 작동하도록 수정
         function showMedicalInfoPage() {
             showPage('medical-info-' + currentLang);
         }
